@@ -1,3 +1,4 @@
+const { randomInt } = require("crypto");
 const http = require("http");
 var StringDecoder = require("string_decoder").StringDecoder;
 
@@ -21,14 +22,19 @@ const getBody = (req, callback) => {
 };
 
 // here, you could declare one or more variables to store what comes back from the form.
-let item = "Enter something below.";
+let N = 10;
+let random = Math.floor(Math.random() * N);
+
+let msg = "Please enter your guess fron 1-10.";
+let msg1="";
 
 // here, you can change the form below to modify the input fields and what is displayed.
 // This is just ordinary html with string interpolation.
 const form = () => {
   return `
   <body>
-  <p>${item}</p>
+  <p>${msg}</p>
+  <p>${msg1}</p>
   <form method="POST">
   <input name="item"></input>
   <button type="submit">Submit</button>
@@ -44,10 +50,13 @@ const server = http.createServer((req, res) => {
     getBody(req, (body) => {
       console.log("The body of the post is ", body);
       // here, you can add your own logic
-      if (body["item"]) {
-        item = body["item"];
+        let userGuess = parseInt(body["item"]); 
+
+      if (userGuess === random) {
+        msg1 = `${userGuess} - You got it!`;
+        random = Math.floor(Math.random() * N); 
       } else {
-        item = "Nothing was entered.";
+        msg1 = `${userGuess} - You lose! Try again.`;
       }
       // Your code changes would end here
       res.writeHead(303, {
