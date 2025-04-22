@@ -13,6 +13,17 @@ const addPerson = (req,res) => {
 const getPeople =(req,res) => {
    res.status(200).json(people);
 }
+const getPersonByID = (req, res) => {
+  const { id } = req.params
+  const person = people.find((person) => person.id === Number(id))
+  
+if (!person) {
+    return res
+      .status(404)
+      .json({ success: false, msg: `no person with id ${id}` })
+  }
+  res.status(200).json(person);
+}
 
 const deletePerson = (req, res) => {
     const { id } = req.params
@@ -47,4 +58,10 @@ const updatePerson = (req, res) => {
   })
   res.status(200).json({ success: true, data: newPeople })
 }
- module.exports = {addPerson,getPeople,deletePerson,updatePerson}
+ module.exports = {
+   addPerson,
+   getPeople,
+   deletePerson,
+   updatePerson,
+   getPersonByID,
+ };
