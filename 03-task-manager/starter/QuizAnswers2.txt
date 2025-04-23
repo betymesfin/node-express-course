@@ -1,0 +1,12 @@
+
+1) we created asyncWrapper because instead of writing try and catch block repititvely
+   it is easy and clean to create a function that accepts a function and wrap it with try catch block and return it .
+
+2) const getTask = asyncWrapper(async (req, res, next) => {  
+  const { id: taskID } = req.params;  
+  const task = await Task.findOne({ _id: taskID });  
+  if (!task) {  
+    return next(new CustomAPIError('somthing wrong',404))
+  }  
+  res.status(200).json({ task });  
+}); 
